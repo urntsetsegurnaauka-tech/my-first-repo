@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="mn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐇 Туулай vs Мэлхий Уралдаан 🐢 🏁</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to bottom, #87CEEB, #90EE90);
+      }
+      h1 {
+        color: #333;
+        margin: 30px 0 10px;
+        font-size: 36px;
+      }
+      .score-board {
+        margin: 20px auto;
+        max-width: 800px;
+        font-size: 28px;
+        color: #fff;
+        background: rgba(0,0,0,0.5);
+        padding: 15px;
+        border-radius: 15px;
+        display: inline-block;
+      }
+      .instructions {
+        margin: 20px auto;
+        max-width: 800px;
+        font-size: 22px;
+        color: #444;
+        background: rgba(255,255,255,0.8);
+        padding: 15px;
+        border-radius: 10px;
+      }
+      .zamBack {
+        width: 95vw;
+        max-width: 2200px;
+        height: 650px;
+        background-image: url('https://thumbs.dreamstime.com/b/cartoon-top-view-landscape-green-field-path-road-goes-grass-trees-visual-nature-illustration-game-background-409748141.jpg');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #228B22;
+        position: relative;
+        margin: 30px auto;
+        border: 10px solid #333;
+        border-radius: 15px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.7);
+        overflow: hidden;
+      }
+      img.animal {
+        width: 180px;
+        height: auto;
+        position: absolute;
+        left: 120px;
+        transition: left 0.15s ease-out;
+        user-select: none;
+        pointer-events: none;
+        filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.6));
+      }
+      #rabbit {
+        top: 140px;
+      }
+      #turtle {
+        top: 390px;
+      }
+      .start-line {
+        position: absolute;
+        left: 100px;
+        top: 0;
+        height: 100%;
+        width: 30px;
+        background: repeating-linear-gradient(90deg, #fff 0px, #fff 15px, #000 15px, #000 30px);
+        opacity: 0.8;
+      }
+      #startButton {
+        padding: 15px 40px;
+        font-size: 28px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      #startButton:hover {
+        background-color: #218838;
+      }
+      #startButton:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🐇 Туулай ба Мэлхийн Уралдаан 🐢 🏁</h1>
+    
+    <div class="score-board">
+      Туулай: <span id="rabbitScore">0</span> 🏆 &nbsp;&nbsp;&nbsp;&nbsp;
+      Мэлхий: <span id="turtleScore">0</span> 🏆
+    </div>
+    
+    <p class="instructions">
+      <strong>R</strong> товч дарж <span style="font-weight:bold;">Туулай</span> 🐇 хөдөлгөнө (хурдан шүү!).<br />
+      <strong>Y</strong> товч дарж <span style="font-weight:bold;">Мэлхий</span> 🐢 хөдөлгөнө (тэвчээртэй!).<br />
+      Ойн замаар уралдацгаая! Хэн илүү олон удаа ялсан бэ? 🔥
+    </p>
+
+    <button id="startButton">Уралдаан Эхлүүлэх!</button>
+
+    <div class="zamBack">
+      <div class="start-line"></div>
+      <img src="https://t4.ftcdn.net/jpg/02/67/18/29/360_F_267182913_hHbK15tK82aNPV8SSzvOpyg5saltpn9M.jpg" alt="Туулай" id="rabbit" class="animal" />
+      <img src="https://thumbs.dreamstime.com/b/cartoon-turtle-wins-crossing-finish-line-illustration-63679331.jpg" alt="Мэлхий" id="turtle" class="animal" />
+    </div>
+
+    <script>
+      let rabbit = document.getElementById("rabbit");
+      let turtle = document.getElementById("turtle");
+      let rabbitScoreEl = document.getElementById("rabbitScore");
+      let turtleScoreEl = document.getElementById("turtleScore");
+      let startButton = document.getElementById("startButton");
+      let posRabbit = 120;
+      let posTurtle = 120;
+      const step = 80;
+      const finish = 1880;
+      let gameStarted = false;
+      let rabbitWins = 0;
+      let turtleWins = 0;
+
+      function startGame() {
+        startButton.disabled = true;
+        startButton.textContent = "3...";
+        setTimeout(() => { startButton.textContent = "2..."; }, 1000);
+        setTimeout(() => { startButton.textContent = "1..."; }, 2000);
+        setTimeout(() => { 
+          startButton.textContent = "ЯВЦГААЯ! 🏁"; 
+          gameStarted = true;
+          setTimeout(() => { 
+            startButton.style.display = "none";
+          }, 1500);
+        }, 3000);
+      }
+
+      function animalFunction(event) {
+        if (!gameStarted) return;
+
+        let key = event.key.toLowerCase();
+        if (key === "r") {
+          posRabbit += step;
+          rabbit.style.left = posRabbit + "px";
+        } else if (key === "y") {
+          posTurtle += step;
+          turtle.style.left = posTurtle + "px";
+        }
+
+        if (posRabbit >= finish) {
+          rabbitWins++;
+          rabbitScoreEl.textContent = rabbitWins;
+          alert("🏆🎉 Туулай түрүүлж яллаа! Хурдан байж болохгүй юу 😎 🐇");
+          endGame();
+        } else if (posTurtle >= finish) {
+          turtleWins++;
+          turtleScoreEl.textContent = turtleWins;
+          alert("🏆🎉 Мэлхий яллаа!!! Тэвчээр үргэлж ялдаг шүү! 🐢 💪");
+          endGame();
+        }
+      }
+
+      function endGame() {
+        gameStarted = false;
+        resetGame();
+        startButton.textContent = "Дахин Уралдаан Эхлүүлэх";
+        startButton.style.display = "block";
+        startButton.disabled = false;
+      }
+
+      function resetGame() {
+        posRabbit = 80;
+        posTurtle = 80;
+        rabbit.style.left = "120px";
+        turtle.style.left = "120px";
+      }
+
+      document.addEventListener("keydown", animalFunction);
+      startButton.addEventListener("click", startGame);
+    </script>
+  </body>
+</html>
